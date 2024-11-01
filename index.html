@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <title>Document</title>
+
 </head>
 
 <body class="bg-info">
@@ -14,100 +15,218 @@
         <form id="multiSectionForm">
 
             <div class="bg-dark w-100 row p-5 section" id="section1">
+                <span id="errorSpan" class="bg-danger position-absolute top-0 start-0" style="opacity: 0;" ></span>
                 <h1 class="text-info">Personele informations</h1>
                 <div class="row p-2">
                     <label for="name" class="text-light p-0 ">Name:</label>
-                    <input name="name" id="name" type="text" class="p-2" placeholder="Name..." required>
+                    <input name="name" id="name" type="text" class="p-2" placeholder="Name..." required style="border : solid 2px transparent ;">
                 </div>
                 <div class="row p-2">
                     <label for="age" class="text-light p-0">Age:</label>
-                    <input id="age" type="number" class="p-2" placeholder="Age..." required>
+                    <input id="age" name="age" maxlength="2" class="p-2" placeholder="Age..." required>
                 </div>
                 <button type="button" class="btn btn-info btn-lg mt-5" onclick="switchSections(2)">Next page</button>
             </div>
 
             <div class="bg-dark w-100 row p-5  section d-none" id="section2">
+                <span id="errorSpan" class="bg-danger position-absolute top-0 start-0" style="opacity: 0;" >Name must have just letters !!</span>
                 <h1 class="text-info">Contact informations</h1>
                 <div class="row p-2">
                     <label for="email" class="text-light p-0 ">Email:</label>
-                    <input id="email" type="text" class="p-2" placeholder="Email..." required>
+                    <input id="email" name="email" type="text" class="p-2" placeholder="Email..." required>
                 </div>
                 <div class="row p-2">
                     <label for="phone" class="text-light p-0">Phone:</label>
-                    <input id="phone" type="number" class="p-2" placeholder="Phone..." required>
+                    <input id="phone" name="phone" type="number" class="p-2" placeholder="Phone..." required>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary btn-lg mt-5" onclick="switchSections(1)">Previous page</button>
-                    <button type="button" class="btn btn-info btn-lg mt-5"  onclick="switchSections(3)">Next page</button>
+                    <button type="button" class="btn btn-secondary btn-lg mt-5" onclick="switchSections(1)">Previous
+                        page</button>
+                    <button type="button" class="btn btn-info btn-lg mt-5" onclick="switchSections(3)">Next
+                        page</button>
                 </div>
             </div>
 
             <div class="bg-dark w-100 row p-5 d-none section" id="section3">
+                <span id="errorSpan" class="bg-danger position-absolute top-0 start-0" style="opacity: 0;" >Name must have just letters !!</span>
                 <h1 class="text-info">Personele informations</h1>
                 <div class="row p-2">
                     <label for="feedBack" class="text-light p-0 ">FeedBack:</label>
                     <textarea id="feedBack" type="text" placeholder="FeedBack..." rows="4" required></textarea>
                 </div>
                 <div class="d-flex justify-content-between">
-                    <button type="button" class="btn btn-secondary btn-lg mt-5" onclick="switchSections(2)">Previous page</button>
-                    <button type="submit" class="btn btn-success btn-lg mt-5" onclick="submitForm(event)">Submit</button>
+                    <button type="button" class="btn btn-secondary btn-lg mt-5" onclick="switchSections(2)">Previous
+                        page</button>
+                    <button type="submit" class="btn btn-success btn-lg mt-5"
+                        onclick="submitForm(event)">Submit</button>
                 </div>
             </div>
 
         </form>
 
-        <div class="bg-dark w-100 row p-5 d-none section" id="section4">
+        <div class="bg-dark w-100 row p-4 d-none section" id="section4">
             <h1 class="text-info" id="userName">Result:</h1>
             <div class="row p-2">
-                <label>Name:</label>
-                <h2 id="nameData" class="text-light"></h2>
-                <label>Age:</label>
-                <h2 id="ageData" class="text-light"></h2>
-                <label>Email:</label>
-                <h2 id="emailData" class="text-light"></h2>
-                <label>Phone Number:</label>
-                <h2 id="phone-number" class="text-light"></h2>
-                <label>Feed back:</label>
-                <h2 id="feedBackData" class="text-light"></h2>
+                <label class="text-info">Name:</label>
+                <h4 id="nameData" class="text-light"></h4>
+                <label class="text-info">Age:</label>
+                <h4 id="ageData" class="text-light"></h4>
+                <label class="text-info">Email:</label>
+                <h4 id="emailData" class="text-light"></h4>
+                <label class="text-info">Phone Number:</label>
+                <h4 id="phone-number" class="text-light"></h4>
+                <label class="text-info">Feed back:</label>
+                <p id="feedBackData" class="text-light"></p>
             </div>
-            <div class="d-flex justify-content-between">
-                <a name="" id="" class="btn btn-secondary btn-lg mt-5" href="#" role="button"
+            <div class="d-flex justify-content-between ">
+                <a  class="btn btn-secondary btn-lg " href="#" role="button"
                     onclick="switchSections(3)">Previous page</a>
-                <a class="btn btn-success btn-lg mt-5" href="#" role="button">Valid</a>
+                <a class="btn btn-success btn-lg " onclick="switchSections(1)" href="#" role="button">Valid</a>
             </div>
         </div>
 
-
     </div>
+
     <script>
+
+        const name = document.getElementById('name');
+        const age = document.getElementById('age');
+        const email = document.getElementById('email');
+        const phone = document.getElementById('phone');
+        const feedback = document.getElementById('feedBack');
+        const form = document.getElementById('multiSectionForm');
+        const inputs = document.querySelectorAll('input');
+        const errorSpan = document.querySelectorAll('span');
+
+        const nameRegex = /^[A-Za-z\s]{0,50}$/;
+        const ageRegex = /^([0-9]*|)$/;
+        const emailRegex = /^$|^[a-zA-Z0-9._%+-]+@gmail\.com$/;
+        const phoneRegex = /^$^|(06|07)[0-9]{8}$/;
+
+
+
+        function valide(input, regex){
+            input.addEventListener('focus', () => {
+                input.style.outline = 'none';
+            });
+            input.addEventListener('input', () => {
+                if (!regex.test(input.value)) {
+                    input.style.border = 'red solid 2px';
+                    if (input.name === 'name') {
+                        errorSpan[0].textContent = 'Name must have just letters !!'
+                    }else if (input.name === 'age'){
+                        errorSpan[0].textContent = 'Age must be a number between 18 and 50 !!'
+                    }else{
+                        errorSpan[0].textContent = ''
+                    }
+                    errorSpan[0].style.opacity = '1' ;
+                }else{
+                    input.style.border = 'transparent solid 2px';
+                    errorSpan[0].style.opacity = '0' ;
+                }
+            })
+        }
+        valide(name , nameRegex);
+        valide(age , ageRegex);
+
+        function valideEmail(input, regex){
+            input.addEventListener('focus', () => {
+                input.style.outline = 'none';
+            });
+            input.addEventListener('mouseout', () => {
+                console.log(regex.test(input.value))
+                if (!regex.test(input.value)) {
+                    input.style.border = 'red solid 2px';
+                    if (input.name === 'email') {
+                        errorSpan[1].textContent = 'Email is not valide !!'
+                    }else if (input.name === 'phone'){
+                        errorSpan[1].textContent = 'Phone is not correct !!'
+                    }
+                    errorSpan[1].style.opacity = '1' ;
+                }else{
+                    input.style.border = 'transparent solid 2px';
+                    errorSpan[1].style.opacity = '0' ;
+                }
+            })
+        }
+        
+        valideEmail(email , emailRegex);
+        valideEmail(phone , phoneRegex);
+
+        feedback.addEventListener('input', () => {
+            if (feedback.value != '') {
+                errorSpan[2].style.opacity = '0' ;
+                feedback.style.border = 'transparent solid 2px';
+            }
+        })
+
         function switchSections(sectionNum) {
+            if (sectionNum === 1) {
+                document.getElementById("multiSectionForm").reset();
+            }else if(sectionNum === 2){
+                if (!nameRegex.test(name.value) || !ageRegex.test(age.value) || name.value === '' || age.value === '' ) {
+                    sectionNum = 1 ;
+                    errorSpan[0].style.opacity = '1' ;
+                    if (name.value === '') {
+                        name.style.border = 'red solid 2px';
+                        errorSpan[0].textContent = 'Name is required !!';
+                    }else if (age.value === ''){
+                        age.style.border = 'red solid 2px';
+                        errorSpan[0].textContent = 'Age is required !!';
+                    }
+                }
+            }else if(sectionNum === 3){
+                if (!emailRegex.test(email.value) || !phoneRegex.test(phone.value) || email.value === '' || phone.value === '' ) {
+                    sectionNum = 2 ;
+                    errorSpan[1].style.opacity = '1' ;
+                    if (email.value === '') {
+                        email.style.border = 'red solid 2px';
+                        errorSpan[1].textContent = 'Email is required !!';
+                    }else if (phone.value === ''){
+                        phone.style.border = 'red solid 2px';
+                        errorSpan[1].textContent = 'Phone is required !!';
+                    }
+                }
+            }else if(sectionNum === 4){
+                if ( feedback.value === '' ) {
+                    sectionNum = 3 ;
+                    errorSpan[2].style.opacity = '1' ;
+                    feedback.style.border = 'red solid 2px';
+                    errorSpan[2].textContent = 'feed back is required !!';
+                }else{
+                    errorSpan[2].style.opacity = '0' ;
+                    feedback.style.border = 'transparent solid 2px';
+
+                }
+            }
             const sections = document.querySelectorAll(".section")
             sections.forEach(element => {
                 element.classList.add('d-none');
             });
             document.getElementById('section' + sectionNum).classList.remove('d-none');
         }
+        
 
         function submitForm(event) {
             event.preventDefault();
-            const name = document.getElementById('name').value;
-            const age = document.getElementById('age').value;
-            const email = document.getElementById('email').value;
-            const phone = document.getElementById('phone').value;
-            const feedback = document.getElementById('feedBack').value;
-            
-            document.getElementById('userName').innerHTML = `Hello, ${name}`;
-            document.getElementById('nameData').innerHTML = name;
-            document.getElementById('ageData').innerHTML = age;
-            document.getElementById('emailData').innerHTML = email;
-            document.getElementById('phone-number').innerHTML = phone;
-            document.getElementById('feedBackData').innerHTML = feedback;
-            
-            
+            const nameData = name.value;
+            const ageData = age.value;
+            const emailData = email.value;
+            const phoneData = phone.value;
+            const feedbackData = feedBack.value;
+
+            document.getElementById('userName').innerHTML = `Hello, ${nameData}`;
+            document.getElementById('nameData').innerHTML = nameData;
+            document.getElementById('ageData').innerHTML = ageData;
+            document.getElementById('emailData').innerHTML = emailData;
+            document.getElementById('phone-number').innerHTML = phoneData;
+            document.getElementById('feedBackData').innerHTML = feedbackData;
+
+
             switchSections(4);
 
 
-            document.getElementById("multiSectionForm").reset();
+
 
         }
 
